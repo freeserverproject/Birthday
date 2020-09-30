@@ -1,0 +1,9 @@
+name: Birthday
+version: ${project.version}
+main: me.tererun.plugin.birthday.birthday.Birthday
+api-version: 1.16
+authors: [ tererun ]
+description: Birthday
+commands:
+  birthday:
+    description: birthday
