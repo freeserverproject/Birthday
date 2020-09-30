@@ -1,4 +1,6 @@
-package me.tererun.plugin.birthday.birthday;
+package me.tererun.plugin.birthday.birthday.task;
+
+import me.tererun.plugin.birthday.birthday.Birthday;
 
 import java.util.TimerTask;
 

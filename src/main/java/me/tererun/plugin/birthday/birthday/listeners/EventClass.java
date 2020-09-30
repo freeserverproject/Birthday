@@ -1,5 +1,6 @@
-package me.tererun.plugin.birthday.birthday;
+package me.tererun.plugin.birthday.birthday.listeners;
 
+import me.tererun.plugin.birthday.birthday.Birthday;
 import me.tererun.plugin.birthday.birthday.serialize.BukkitSerialization;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -22,13 +23,9 @@ import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 
 public class EventClass implements Listener {
 
@@ -48,20 +45,14 @@ public class EventClass implements Listener {
         Player player = e.getPlayer();
         String uuid = player.getUniqueId().toString();
         if (Birthday.databaseDriver.getCount("birthday", uuid) != 0) {
-            List<String> result = Birthday.databaseDriver.loadData("birthday", uuid);
-            String year = result.get(1);
-            String day = result.get(2);
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
             sdf.setLenient(false);
-            try {
-                Date birthDate = sdf.parse(year + day);
-                Calendar birthCalender = Calendar.getInstance();
-                birthCalender.setTime(birthDate);
-                if ((calendar.get(Calendar.MONTH) == birthCalender.get(Calendar.MONTH)) && (calendar.get(Calendar.DAY_OF_MONTH) == birthCalender.get(Calendar.DAY_OF_MONTH))) {
-                    Bukkit.broadcastMessage(Birthday.prefix + "§6本日の主役が登場！ §a" + player.getName() + " §eさんの誕生日です！");
-                }
-            } catch (ParseException parseException) {}
+            Date birthDate = Birthday.getDateFromUUID(uuid);
+            Calendar birthCalender = Calendar.getInstance();
+            birthCalender.setTime(birthDate);
+            if ((calendar.get(Calendar.MONTH) == birthCalender.get(Calendar.MONTH)) && (calendar.get(Calendar.DAY_OF_MONTH) == birthCalender.get(Calendar.DAY_OF_MONTH))) {
+                Bukkit.broadcastMessage(Birthday.prefix + "§6本日の主役が登場！ §a" + player.getName() + " §eさんの誕生日です！");
+            }
         }
     }
 

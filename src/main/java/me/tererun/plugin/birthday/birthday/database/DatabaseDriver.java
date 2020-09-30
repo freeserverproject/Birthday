@@ -7,8 +7,8 @@ import java.io.File;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
 import java.util.Date;
+import java.util.*;
 
 public class DatabaseDriver {
 
@@ -153,7 +153,6 @@ public class DatabaseDriver {
         } catch(SQLException e) {
             System.err.println("Count error");
             System.err.println(e.getMessage());
-            return 0;
         } finally {
             try {
                 if(connection != null) connection.close();
@@ -165,6 +164,27 @@ public class DatabaseDriver {
     }
 
     public void addData(String tableName, String uuid, String year, String day) {
+        String sql = "INSERT OR REPLACE INTO " + tableName + " (uuid, year, day) VALUES('" + uuid + "', '" + year + "', '" + day + "')";
+
+        try {
+            connection = DriverManager.getConnection(url);
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+
+            statement.executeUpdate(sql);
+            Birthday.plugin.getLogger().severe(Birthday.prefix + "Insert or Replace data: uuid = " + uuid + ", year = " + year + ", day = " + day);
+        } catch(SQLException e) {
+            System.err.println("Insert or Replace error");
+            System.err.println(e.getMessage());
+        } finally {
+            try {
+                if(connection != null) connection.close();
+            } catch(SQLException e) {
+                System.err.println(e);
+            }
+        }
+
+        /* This is not used!
         if (getCount(tableName, uuid) == 0) {
             System.out.println("addData to insert: " + Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName());
             insertData(tableName, uuid, year, day);
@@ -172,6 +192,7 @@ public class DatabaseDriver {
             System.out.println("addData to update: " + Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName());
             updateData(tableName, uuid, year, day);
         }
+         */
     }
 
     /**
@@ -233,7 +254,8 @@ public class DatabaseDriver {
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
 
-            statement.executeUpdate(sql);
+            int result = statement.executeUpdate(sql);
+            Birthday.plugin.getLogger().severe(Birthday.prefix + "Delete data: " + result);
         } catch(SQLException e) {
             System.err.println("Delete error");
             System.err.println(e.getMessage());
@@ -255,7 +277,7 @@ public class DatabaseDriver {
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
 
-            statement.executeUpdate("CREATE TABLE " + tableName + " (uuid text, year text, day text)");
+            statement.executeUpdate("CREATE TABLE " + tableName + " (uuid text primary key, year text, day text)");
         } catch(SQLException e) {
             System.err.println("Create table error");
             System.err.println(e.getMessage());

@@ -1,8 +1,11 @@
 package me.tererun.plugin.birthday.birthday;
 
 import dev.dbassett.skullcreator.SkullCreator;
+import me.tererun.plugin.birthday.birthday.commands.CommandClass;
 import me.tererun.plugin.birthday.birthday.database.DatabaseDriver;
+import me.tererun.plugin.birthday.birthday.listeners.EventClass;
 import me.tererun.plugin.birthday.birthday.serialize.BukkitSerialization;
+import me.tererun.plugin.birthday.birthday.task.BirthdayTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -15,8 +18,6 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -97,5 +98,24 @@ public final class Birthday extends JavaPlugin {
         presentMeta.getPersistentDataContainer().set(key, PersistentDataType.STRING, BukkitSerialization.toBase64(Bukkit.createInventory(null, 9, "§e§oプレゼントボックス")));
         presentBox.setItemMeta(presentMeta);
         return presentBox;
+    }
+
+    public static String dateToString(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        sdf.setLenient(false);
+        return sdf.format(date);
+    }
+
+    public static Date getDateFromUUID(String uuid) {
+        List<String> result = Birthday.databaseDriver.loadData("birthday", uuid);
+        String year = result.get(1);
+        String day = result.get(2);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        sdf.setLenient(false);
+        try {
+            return sdf.parse(year + day);
+        } catch (ParseException parseException) {}
+        return null;
     }
 }

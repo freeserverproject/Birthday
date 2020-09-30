@@ -1,5 +1,6 @@
-package me.tererun.plugin.birthday.birthday;
+package me.tererun.plugin.birthday.birthday.gui;
 
+import me.tererun.plugin.birthday.birthday.Birthday;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -11,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.util.UUID;
 
 public class BirthdaySetGUI {
     public static void openInputGUI(Player myPlayer, String uuid) {
@@ -36,7 +38,7 @@ public class BirthdaySetGUI {
                         Calendar birthCalender = Calendar.getInstance();
                         birthCalender.setTime(sdfDate);
                         if ((cl.get(Calendar.MONTH) == birthCalender.get(Calendar.MONTH)) && (cl.get(Calendar.DAY_OF_MONTH) == birthCalender.get(Calendar.DAY_OF_MONTH))) {
-                            Birthday.birthdayers.add(player.getUniqueId());
+                            Birthday.birthdayers.add(UUID.fromString(uuid));
                             Bukkit.broadcastMessage(Birthday.prefix + "§e本日は " + player.getName() + " さんの誕生日です！");
                         } else {
                             if (Birthday.birthdayers.contains(player.getUniqueId())) {
