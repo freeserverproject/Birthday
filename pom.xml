@@ -67,8 +67,8 @@
             <url>https://dl.bintray.com/deanveloper/SkullCreator</url>
         </repository>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
         </repository>
     </repositories>
 
@@ -91,9 +91,10 @@
             <version>3.32.3.2</version>
         </dependency>
         <dependency>
-            <groupId>com.github.WesJD.AnvilGUI</groupId>
+            <groupId>net.wesjd</groupId>
             <artifactId>anvilgui</artifactId>
-            <version>master-SNAPSHOT</version>
+            <version>1.5.3-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 </project>

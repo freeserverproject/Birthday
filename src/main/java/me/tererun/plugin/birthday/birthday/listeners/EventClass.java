@@ -9,9 +9,11 @@ import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -59,7 +61,7 @@ public class EventClass implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) throws IOException {
         if ((e.getHand() == null) || (e.getItem() == null) || (!e.getItem().hasItemMeta())) return;
-        if (e.getHand().equals(EquipmentSlot.HAND)) {
+        if (e.getHand().equals(EquipmentSlot.HAND) && (e.getAction().equals(Action.RIGHT_CLICK_BLOCK) || e.getAction().equals(Action.RIGHT_CLICK_AIR))) {
             ItemStack handItem = e.getItem();
             ItemMeta  handMeta = handItem.getItemMeta();
             PersistentDataContainer handContainer = handMeta.getPersistentDataContainer();
@@ -84,12 +86,18 @@ public class EventClass implements Listener {
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent e) {
-        if ((e.getCurrentItem() == null) || (!e.getCurrentItem().hasItemMeta())) return;
-        Player player = (Player) e.getWhoClicked();
-        if (player.getOpenInventory().getTitle().equalsIgnoreCase("§e§oプレゼントボックス")) {
-            if (e.getCurrentItem().getItemMeta().getPersistentDataContainer().has(Birthday.key, PersistentDataType.STRING)) {
+        if (e.getView().getTitle().equalsIgnoreCase("§e§oプレゼントボックス")) {
+            if (e.getClickedInventory() == null) e.setCancelled(true);
+            if (e.getCurrentItem() != null && e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().getPersistentDataContainer().has(Birthday.key, PersistentDataType.STRING)) {
                 e.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerDropItem(PlayerDropItemEvent e) {
+        if (e.getPlayer().getOpenInventory().getTitle().equalsIgnoreCase("§e§oプレゼントボックス")) {
+            e.setCancelled(true);
         }
     }
 
