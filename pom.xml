@@ -6,14 +6,14 @@
 
     <groupId>me.tererun.plugin.birthday</groupId>
     <artifactId>Birthday</artifactId>
-    <version>Patch-1.0.1</version>
+    <version>Patch-1.0.2</version>
     <packaging>jar</packaging>
 
     <name>Birthday</name>
 
     <description>Birthday</description>
     <properties>
-        <java.version>1.8</java.version>
+        <java.version>16</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -40,6 +40,12 @@
                         </goals>
                         <configuration>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <relocations>
+                                <relocation>
+                                    <pattern>net.wesjd.anvilgui</pattern>
+                                    <shadedPattern>me.tererun.plugin.birthday.relocate.anvilgui</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>
@@ -76,14 +82,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>dev.dbassett</groupId>
             <artifactId>skullcreator</artifactId>
             <version>3.0.0</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>net.wesjd</groupId>
