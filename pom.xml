@@ -6,7 +6,7 @@
 
     <groupId>me.tererun.plugin.birthday</groupId>
     <artifactId>Birthday</artifactId>
-    <version>Patch-1.0.3</version>
+    <version>Patch-1.0.4</version>
     <packaging>jar</packaging>
 
     <name>Birthday</name>
