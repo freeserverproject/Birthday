@@ -27,14 +27,12 @@ public final class Birthday extends JavaPlugin {
     public static Plugin plugin;
     public static NamespacedKey key;
     public static DatabaseDriver databaseDriver;
-    public static FileConfiguration config;
     public static String prefix = "§f[§cBirthday§f\uD83C\uDF82]: ";
     public static HashSet<UUID> birthdayers = new HashSet<>();
 
     @Override
     public void onEnable() {
         registerPlugin();
-        registerConfig();
         registerRecipe();
         registerCommands();
         registerEvents();
@@ -59,11 +57,6 @@ public final class Birthday extends JavaPlugin {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         timer.schedule(new BirthdayTask(), calendar.getTime());
-    }
-
-    private void registerConfig() {
-        saveDefaultConfig();
-        config = getConfig();
     }
 
     private void registerPlugin() {
